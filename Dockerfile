@@ -28,3 +28,10 @@ ENV SERVER_ID="Server_1"
 
 # Command to run your server (e.g., using Gunicorn)
 CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
+CMD ["python", "server.py"]
+
+#Build the server image
+docker build -t server-image -f Dockerfile.server
+
+#Build Load Balancer image
+#docker build -t load-balancer-image -f Dockerfile.loadbalancer
