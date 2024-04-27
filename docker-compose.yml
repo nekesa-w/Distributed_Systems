@@ -1,6 +1,15 @@
 version: '3'
 
 services:
+  load_balancer:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - .:/usr/src/dist_app
+    depends_on:
+      - web
+
   web:
     image: python:3.9
     command: gunicorn -b 0.0.0.0:5000 app:app
@@ -11,4 +20,3 @@ services:
     environment:
       FLASK_APP: app.py
       FLASK_RUN_HOST: 0.0.0.0
-
