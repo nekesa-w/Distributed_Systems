@@ -83,38 +83,39 @@ In this task, one file was created:
 #### File included:
 1. consistenthashing.py
 
-## Features
+### Features
 
 - **Consistent Hashing**: Uses a circular hash structure to distribute requests.
 - **Virtual Servers**: Replicates each physical server to better distribute load.
 - **Load Balancing**: Efficiently maps client requests to server containers.
 - **Fault Tolerance**: Handles server addition and removal gracefully.
 
-## Implementation Details
+### Implementation Details
 
-### Parameters
+#### Parameters
 
 - **Number of Server Containers (`N`)**: 3
 - **Total Number of Slots in Hash Map (`#slots`)**: 512
 - **Number of Virtual Servers per Server Container (`K`)**: 9 (calculated as `log2(512)`)
 
-### Hash Functions
+#### Hash Functions
 
 - **Request Mapping (`H(i)`)**: \( H(i) = i + 2i^2 + 17 \)
 - **Virtual Server Mapping (`Φ(i, j)`)**: \( Φ(i, j) = i + j + 2j^2 + 25 \)
 
-### Collision Handling
+#### Collision Handling
 
 In case of a collision, quadratic probing is used to find the next suitable slot.
 
-### Example Usage
+#### Example Usage
 
 The script initializes a consistent hash map with 3 server containers, maps requests to these servers, and demonstrates adding and removing servers.
 
-### Running the script
+#### Running the script
 
 ```
 python3 consistenthashing.py
+```
 
 ### 3. LOAD BALANCER
 
