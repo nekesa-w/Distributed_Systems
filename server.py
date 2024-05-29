@@ -6,7 +6,7 @@ app = Flask(__name__)
 
 server_id = int(os.getenv('SERVER_ID', '1'))
 
-@app.route('/home')
+@app.route('/home', methods=['GET'])
 def home():
     response = {
         "message": f"Hello from Server: {server_id}",
@@ -14,7 +14,7 @@ def home():
     }
     return jsonify(response), 200
 
-@app.route('/heartbeat')
+@app.route('/heartbeat', methods=['GET'])
 def heartbeat():
     return '', 200
 
