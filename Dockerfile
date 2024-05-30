@@ -12,3 +12,9 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV SERVER_ID=1
 
 CMD ["python", "server.py"]
+
+COPY loadbalancer.py consistenthashing.py .
+
+RUN pip install flask requests
+
+CMD ["python", "loadbalancer.py"]
