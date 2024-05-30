@@ -134,11 +134,12 @@ The values created in the consistent_hash_map.py, were used in the loadbalancer.
 Run the analysis.py file
 1. After launching the async requests for N=3 srevers, it is observed that It can be observed that Server 1 and Server 2 handled a relatively similar number of requests, while Server 3 handled slightly fewer requests compared to the other two servers.This indicates that the load balancer effectively distributed the incoming requests among the available server containers, achieving a nearly balanced workload distribution.
 2. When the number of servers is increased from 2 to 6 and 1000 requests launched, the average load per server reduces significantly , indicating that the load balancer distributes requests evenly among the additional server containers, resulting in a more balanced and effecient resource utilization.
-3. Use the curl command to send requests to all the end by running the following commands
-   **curl http://0.0.0.0:5000/rep**
-   **curl -X POST -d '{"n": 1, "hostnames": ["new_server"]}' -H "Content-Type: application/json" http://localhost:5000/add**
-   **curl http://0.0.0.0:5000/home**
-   Stop one of the server container: docker stop <server_id>
+3. Use the curl command to send requests.
+   ``` curl http://0.0.0.0:5000/rep```
+   ```curl -X POST -d '{"n": 1, "hostnames": ["new_server"]}' -H "Content-Type: application/json" http://localhost:5000/add```
+   ```curl http://0.0.0.0:5000/home```
+   Stop one of the server container:
+   ```docker stop <server_id>```
 When requests are sent to the load balancer,it automatically detects failure and redistributes the requests to healthy servers.
-4. A more balanced distribution of requests among all the server containers is observed.Fault tolerance and effecient detection of failures.
+5. A more balanced distribution of requests among all the server containers is observed.Fault tolerance and effecient detection of failures.
  
