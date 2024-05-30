@@ -131,3 +131,5 @@ The values created in the consistent_hash_map.py, were used in the loadbalancer.
 1. to route the client requests to one of the server replicas so that the overall load is equally distributed across the available replicas
 
 ### 4. ANALYSIS
+1. After launching the async requests for N=3 srevers, it is observed that It can be observed that Server 1 and Server 2 handled a relatively similar number of requests, while Server 3 handled slightly fewer requests compared to the other two servers.This indicates that the load balancer effectively distributed the incoming requests among the available server containers, achieving a nearly balanced workload distribution.
+2. 
