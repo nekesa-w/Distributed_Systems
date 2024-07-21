@@ -136,3 +136,6 @@ Run the analysis.py file
 When requests are sent to the load balancer,it automatically detects failure and redistributes the requests to healthy servers.
 5. A more balanced distribution of requests among all the server containers is observed.Fault tolerance and effecient detection of failures.
  
+### Images
+
+![img](image.png)
