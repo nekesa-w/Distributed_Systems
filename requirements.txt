@@ -1,2 +1,5 @@
-Flask==2.2.5
+flask
+requests
+aiohttp
+matplotlib
 docker

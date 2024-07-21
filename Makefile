@@ -1,9 +1,14 @@
 # Makefile
+.PHONY: build run stop clean
+
 build:
 	docker-compose build
 
-up:
-	docker-compose up
+run:
+	docker-compose up -d
 
-down:
+stop:
 	docker-compose down
+
+clean: stop
+	docker system prune -f
