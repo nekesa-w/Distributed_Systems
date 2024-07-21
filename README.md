@@ -121,15 +121,24 @@ In this task three files were created:
 The values created in the consistent_hash_map.py, were used in the loadbalancer.py.
 **Primary task of the loadbalancer**
 
-1. to route the client requests to one of the server replicas so that the overall load is equally distributed across the available replicas
+- Manages server instances using consistent hashing.
+- Provides API for adding/removing servers and checking status.
+- Handles request routing to appropriate server instances.
 
 ### 4. ANALYSIS
-Run the analysis.py file
+Run the analysis.py file in the analysis folder
+
+```
+python3 analysis/analysis.py
+```
+
 1. After launching the async requests for N=3 srevers, it is observed that It can be observed that Server 1 and Server 2 handled a relatively similar number of requests, while Server 3 handled slightly fewer requests compared to the other two servers.This indicates that the load balancer effectively distributed the incoming requests among the available server containers, achieving a nearly balanced workload distribution.
 2. When the number of servers is increased from 2 to 6 and 1000 requests launched, the average load per server reduces significantly , indicating that the load balancer distributes requests evenly among the additional server containers, resulting in a more balanced and effecient resource utilization.
 3. Use the curl command to send requests.
    ``` curl http://0.0.0.0:5000/rep```
+
    ```curl -X POST -d '{"n": 1, "hostnames": ["new_server"]}' -H "Content-Type: application/json" http://localhost:5000/add```
+
    ```curl http://0.0.0.0:5000/home```
    Stop one of the server container:
    ```docker stop <server_id>```
