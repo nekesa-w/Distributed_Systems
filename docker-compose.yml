@@ -12,23 +12,24 @@ services:
   server1:
     build:
       context: .
-      dockerfile: Dockerfile.server
+      dockerfile: Dockerfile
     environment:
       - SERVER_ID=1
 
   server2:
     build:
       context: .
-      dockerfile: Dockerfile.server
+      dockerfile: Dockerfile
     environment:
       - SERVER_ID=2
 
   server3:
     build:
       context: .
-      dockerfile: Dockerfile.server
+      dockerfile: Dockerfile
     environment:
       - SERVER_ID=3
+      
 networks:
   net1:
     driver: bridge
