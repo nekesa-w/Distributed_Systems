@@ -2,4 +2,4 @@ Flask==2.2.5
 requests==2.27.1
 aiohttp==3.8.1
 matplotlib==3.5.1
-docker
+docker==27.0.3
