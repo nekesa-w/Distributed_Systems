@@ -6,7 +6,7 @@ WORKDIR /app
 
 COPY load_balancer.py consistent_hashing.py ./
 
-RUN pip install Flask requests
+RUN pip install Flask random
 
 EXPOSE 5000
 
