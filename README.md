@@ -107,14 +107,14 @@ The script initializes a consistent hash map with 3 server containers, maps requ
 #### Running the script
 
 ```
-python3 consistenthashing.py
+python3 consistent_hashing.py
 ```
 
 ### 3. LOAD BALANCER
 
 In this task three files were created:
 
-1. loadbalancer.py
+1. load_balancer.py
 2. Dockerfile - it was updated so as to containerize the load balancer
 3. Makefile - to deploy the whole stack in the Ubuntu environment
 
