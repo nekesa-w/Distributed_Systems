@@ -138,4 +138,6 @@ When requests are sent to the load balancer,it automatically detects failure and
  
 ### Images
 
+![img](image-1.png)
+
 ![img](image.png)
