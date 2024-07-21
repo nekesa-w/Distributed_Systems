@@ -3,12 +3,10 @@ FROM python:3.9-slim
 # Set the working directory in the container
 WORKDIR /app
 
-COPY . /app
+COPY loadbalancer.py .
+COPY consistenthashing.py .
 
-# Install any needed dependencies
-RUN pip install --no-cache-dir consistenthashing
-
-EXPOSE 5000
+RUN pip install flask
 
 # Run load balancer.py when the container launches
 CMD ["python", "loadbalancer.py"]

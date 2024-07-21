@@ -1,76 +1,60 @@
-import hashlib
-import bisect
 import math
 
+class ServerContainer:
+    def __init__(self, id):
+        self.id = id
+        self.virtual_servers = []
+
 class ConsistentHashMap:
-    def __init__(self, num_servers=3, num_slots=512, num_virtual_servers=None):
-        self.num_servers = num_servers
+    def __init__(self, num_containers, num_slots):
+        self.num_containers = num_containers
         self.num_slots = num_slots
-        self.num_virtual_servers = num_virtual_servers if num_virtual_servers else int(math.log2(num_slots))
-        self.ring = []
-        self.nodes = {}
-        
-        self._initialize_servers()
+        self.containers = [ServerContainer(i) for i in range(num_containers)]
+        self.hash_map = [None] * num_slots
 
-    def _hash_request(self, request_id):
-        return (request_id + 2 * request_id**2 + 17) % self.num_slots
+    def hash_request(self, request_id):
+        """Hash function for mapping requests to slots."""
+        return (request_id + 2 * request_id + 17) % self.num_slots
 
-    def _hash_virtual_server(self, server_id, replica_id):
-        return (server_id + replica_id + 2 * replica_id**2 + 25) % self.num_slots
+    def hash_virtual_server(self, container_id, replica_id):
+        """Hash function for mapping virtual servers to slots."""
+        return (container_id + replica_id + 2 * replica_id + 25) % self.num_slots
 
-    def _initialize_servers(self):
-        for server_id in range(1, self.num_servers + 1):
-            for replica_id in range(self.num_virtual_servers):
-                slot = self._hash_virtual_server(server_id, replica_id)
-                self._add_to_ring(slot, server_id)
+    def add_virtual_servers(self):
+        """Add virtual servers for each container to the hash map."""
+        num_virtual_servers = math.ceil(math.log2(self.num_slots))
+        for container in self.containers:
+            for j in range(num_virtual_servers):
+                slot = self.hash_virtual_server(container.id, j)
+                container.virtual_servers.append(slot)
+                
+                # Handle collision using linear probing
+                if self.hash_map[slot] is None:
+                    self.hash_map[slot] = container
+                else:
+                    next_slot = (slot + 1) % self.num_slots
+                    while self.hash_map[next_slot] is not None:
+                        next_slot = (next_slot + 1) % self.num_slots
+                    self.hash_map[next_slot] = container
 
-    def _add_to_ring(self, slot, server_id):
-        if slot in self.nodes:
-            # Handle collision with quadratic probing
-            i = 1
-            while slot in self.nodes:
-                slot = (slot + i**2) % self.num_slots
-                i += 1
-        bisect.insort(self.ring, slot)
-        self.nodes[slot] = server_id
+    def map_request_to_container(self, request_id):
+        """Map a request ID to a server container."""
+        slot = self.hash_request(request_id)
+        container = self.hash_map[slot]
+        if container is None:
+            return None  # No server container found for this request
+        else:
+            return container.id
 
-    def get_server(self, request_id):
-        if not self.ring:
-            return None
-        slot = self._hash_request(request_id)
-        idx = bisect.bisect(self.ring, slot)
-        if idx == len(self.ring):
-            idx = 0
-        return self.nodes[self.ring[idx]]
+# Initialize consistent hash map
+num_containers = 3
+num_slots = 512
+consistent_hash_map = ConsistentHashMap(num_containers, num_slots)
 
-    def add_server(self, new_server_id):
-        for replica_id in range(self.num_virtual_servers):
-            slot = self._hash_virtual_server(new_server_id, replica_id)
-            self._add_to_ring(slot, new_server_id)
+# Add virtual servers to the hash map
+consistent_hash_map.add_virtual_servers()
 
-    def remove_server(self, server_id):
-        to_remove = [slot for slot, sid in self.nodes.items() if sid == server_id]
-        for slot in to_remove:
-            self.ring.remove(slot)
-            del self.nodes[slot]
-
-# Example usage
-hash_map = ConsistentHashMap(num_servers=3)
-
-print("Initial Mapping:")
-for request_id in [132574, 287430, 549321]:
-    server = hash_map.get_server(request_id)
-    print(f"Request {request_id} is mapped to Server {server}")
-
-print("\nAdding a new server:")
-hash_map.add_server(4)
-for request_id in [132574, 287430, 549321]:
-    server = hash_map.get_server(request_id)
-    print(f"Request {request_id} is mapped to Server {server}")
-
-print("\nRemoving a server:")
-hash_map.remove_server(2)
-for request_id in [132574, 287430, 549321]:
-    server = hash_map.get_server(request_id)
-    print(f"Request {request_id} is mapped to Server {server}")
-
+# Map requests to server containers
+request_id = 23567
+container_id = consistent_hash_map.map_request_to_container(request_id)
+print("Request", request_id, "is mapped to Server Container", container_id)

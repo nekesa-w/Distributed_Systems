@@ -1,15 +1,34 @@
-version: "3.9"
+# docker-compose.yml
+version: '3.8'
+
 services:
-  load-balancer:
-    build: .
-    image: loadbalancer
+  load_balancer:
+    build:
+      context: .
+      dockerfile: Dockerfile2
     ports:
       - "5000:5000"
-    volumes:
-      - .:/app
-    networks:
-      - net1
 
+  server1:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    environment:
+      - SERVER_ID=1
+
+  server2:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    environment:
+      - SERVER_ID=2
+
+  server3:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    environment:
+      - SERVER_ID=3
 networks:
   net1:
     driver: bridge
